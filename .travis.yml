@@ -11,4 +11,3 @@ addons:
 
 script:
   - make
-  - make install
