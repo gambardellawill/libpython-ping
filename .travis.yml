@@ -10,4 +10,5 @@ addons:
       - python3-dev
 
 script:
-  make
+  - make
+  - make install
