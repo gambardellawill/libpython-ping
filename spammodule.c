@@ -12,3 +12,19 @@ spam_system(PyObject *self, PyObject *args)
   sts = system(command);
   return PyLong_FromLong(sts);
 }
+
+
+static PyObject *SpamError
+PyMODINIT_FUNC PyInit_spam(void)
+{
+  PyObject *m;
+
+  m = PyModule_Create(&spammodule);
+  if (m == NULL)
+    return NULL;
+
+  SpamError = PyErr_NewException("spam.error", NULL, NULL);
+  Py_INCREF(SpamError);
+  PyModule_AddObject(m, "error", SpamError);
+  return m;
+}
