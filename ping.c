@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Must add this library to avoid implicit declarations of file descriptor methods */
+#include <unistd.h>
+
 /* Sockets libraries */
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -15,12 +18,12 @@
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
     int i, s, offset, on;
     char buf[400];
     struct ip *ip = (struct ip *)buf;
-    struct icpmhdr *icmp = (struct icpmhdr *)(ip + 1);
+    struct icmphdr *icmp = (struct icmphdr *)(ip + 1);
     struct hostent *hp, *hp2; /* Host entities/entry points */
     struct sockaddr_in destination;
     int num = 100;
@@ -91,8 +94,8 @@ int main(int argc, char *argv[])
         ip->ip_p = 1;
         ip->ip_sum = 0;
 
-        destination_address.sin_addr = ip->ip_dst;
-        destination_address.sin_family = AF_INET;
+        destination.sin_addr = ip->ip_dst;
+        destination.sin_family = AF_INET;
 
         icmp->type = ICMP_ECHO;
         icmp->code = 0;
@@ -112,14 +115,14 @@ int main(int argc, char *argv[])
                 ip->ip_len = htons(418);
             }
 
-            if(sendto(s, buf, sizeof(buf), 0, (struct sockaddr *)&dst, sizeof(dst)) < 0)
+            if(sendto(s, buf, sizeof(buf), 0, (struct sockaddr *)&destination, sizeof(destination)) < 0)
             {
                 fprintf(stderr, "offset %d: ", offset);
                 perror("sendto() error");
             }
             else
             {
-                printf("sendto() is OK.\n");
+                /* printf("sendto() is OK.\n"); */
             }
 
             if(offset == 0)
