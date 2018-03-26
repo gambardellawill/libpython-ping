@@ -18,6 +18,11 @@
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
 
+/* Python C API */
+#include <Python.h>
+
+int ping(int op_res, int a , char* b);
+
 int main(int argc, char **argv)
 {
     int i, s, offset, on;
@@ -27,13 +32,6 @@ int main(int argc, char **argv)
     struct hostent *hp, *hp2; /* Host entries */
     struct sockaddr_in destination;
     int num = 100;
-
-    if (argc < 3)
-    {
-        printf("\nUsage: %s <source_address> <destination_address> [#_of_packets]\n", argv[0]);
-        printf(" - #_of_packets is the number of packets to be sent, 100 is the default value\n");
-        exit(1);
-    }
 
     if (argc == 4)
     {
@@ -133,8 +131,18 @@ int main(int argc, char **argv)
             }
         }
         /* Close socket */
-        close(s);
+        close(s);]
         usleep(30000);
     }
     return 0;
+}
+
+int ping(int op_res, int a, char* b)
+{
+
+}
+
+static PyObject* ping(PyObject* self, PyObject* args)
+{
+
 }

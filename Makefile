@@ -1,3 +1,6 @@
+CC=gcc
+CFLAGS=-g -Wall -std=c90 -pedantic -O2
+
 make:
 	python3 setup.py build
 
@@ -5,5 +8,8 @@ install:
 	python3 setup.py install
 
 csocks:
-	gcc my_client.c -g -Wall -O2 -o client.run
-	gcc my_server.c -g -Wall -O2 -o server.run
+	$(CC) $(CFLAGS) my_client.c -o client.run
+	$(CC) $(CFLAGS) my_server.c -o server.run
+
+cping:
+	$(CC) $(CFLAGS) ping_functions.c -o
